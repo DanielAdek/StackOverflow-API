@@ -1,0 +1,335 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A simple CRUD operation built with Node and Typescript.",
+    "version": "1.0.0",
+    "title": "StackOverflow API",
+    "contact": {
+      "email": "daniel.adek.k@gmail.com"
+    }
+  },
+  "host": "127.0.0.1:8080",
+  "basePath": "/api/v1",
+  "tags": [{
+      "name": "Get Started"
+    },
+    {
+      "name": "StackQuestion",
+      "description": "Endpoint to Create, Retrieve and Retrieve one question"
+    },
+    {
+      "name": "StackAnswer",
+      "description": "Endpoint for Answering a question"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Get Started"
+        ],
+        "summary": "Test endpoint",
+        "description": "",
+        "operationId": "getStarted",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Success Response Format",
+            "schema": {
+              "$ref": "#/definitions/SuccessApiResponseFormat"
+            }
+          },
+          "400": {
+            "description": "Failure Response Format",
+            "schema": {
+              "$ref": "#/definitions/FailedApiResponseFormat"
+            }
+          }
+        }
+      }
+    },
+    "/stack/question/create": {
+      "post": {
+        "tags": [
+          "StackQuestion"
+        ],
+        "summary": "Create a question",
+        "description": "",
+        "operationId": "createQuestion",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+          "in": "body",
+          "name": "body",
+          "description": "Question object that need to be added to question table",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/question"
+          }
+        }],
+        "responses": {
+          "201": {
+            "description": "Success Response Format",
+            "schema": {
+              "$ref": "#/definitions/SuccessApiResponseFormat"
+            }
+          },
+          "400": {
+            "description": "Failure Response Format",
+            "schema": {
+              "$ref": "#/definitions/FailedApiResponseFormat"
+            }
+          }
+        }
+      }
+    },
+    "/stack/questions": {
+      "get": {
+        "tags": [
+          "StackQuestion"
+        ],
+        "summary": "Retrieve all questions",
+        "description": "",
+        "operationId": "retrieveQuestions",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Response Format",
+            "schema": {
+              "$ref": "#/definitions/SuccessApiResponseFormat"
+            }
+          },
+          "400": {
+            "description": "Failure Response Format",
+            "schema": {
+              "$ref": "#/definitions/FailedApiResponseFormat"
+            }
+          }
+        }
+      }
+    },
+    "/stack/answer/{questionId}": {
+      "post": {
+        "tags": [
+          "StackAnswer"
+        ],
+        "summary": "post an answer",
+        "description": "",
+        "operationId": "createAnswer",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [{
+            "in": "body",
+            "name": "body",
+            "description": "Answer object that need to be added to answer table",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/answer"
+            }
+          },
+          {
+            "in": "path",
+            "name": "questionId",
+            "description": "Paste the Id of the question you want to answer",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success Response Format",
+            "schema": {
+              "$ref": "#/definitions/SuccessApiResponseFormat"
+            }
+          },
+          "400": {
+            "description": "Failure Response Format",
+            "schema": {
+              "$ref": "#/definitions/FailedApiResponseFormat"
+            }
+          }
+        }
+      }
+    },
+    "/stack/question/{questionId}/answers": {
+      "get": {
+        "tags": [
+          "StackAnswer"
+        ],
+        "summary": "Retrieve all answers",
+        "description": "",
+        "operationId": "retrieveAnswers",
+        "parameters": [{
+          "in": "path",
+          "name": "questionId",
+          "description": "Paste the Id of the question you want to get its answers",
+          "required": true,
+          "type": "string"
+        }],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success Response Format",
+            "schema": {
+              "$ref": "#/definitions/SuccessApiResponseFormat"
+            }
+          },
+          "400": {
+            "description": "Failure Response Format",
+            "schema": {
+              "$ref": "#/definitions/FailedApiResponseFormat"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "question": {
+      "type": "object",
+      "properties": {
+        "ques": {
+          "type": "string",
+          "example": "What is the difference between lambda expressions and fat arrow or anonymous functions in Javascript"
+        },
+        "tags": {
+          "type": "string",
+          "example": "C#, Javascript, Lambda-expression, fat-arrow-functions"
+        },
+        "questionaire": {
+          "type": "string",
+          "example": "DanielAdek"
+        }
+      }
+    },
+    "answer": {
+      "type": "object",
+      "properties": {
+        "ans": {
+          "type": "string",
+          "example": "These function expressions are created at runtime and must be declared/defined before they can be called i.e. they are not hoisted, unlike function declarations that are hoisted as soon as program execution begins and can be called before its actual declaration.  \n  On the other hand, lambda expressions are abstractions which enable a function to be passed around like data. In JavaScript, everything can be treated as an object, this means that a function can be sent into another function as a parameter and can also be retrieved from the called function as a return value"
+        },
+        "answerer": {
+          "type": "string",
+          "example": "Daniel Adekunle"
+        }
+      }
+    },
+    "params": {
+      "type": "string",
+      "example": "5ee7666a29dc6b0ac4c9bbdf"
+    },
+    "SuccessApiResponseFormat": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "success": {
+              "type": "boolean"
+            },
+            "message": {
+              "type": "string"
+            },
+            "metadata": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "target": {
+                  "type": "string"
+                }
+              }
+            },
+            "details": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "operationStatus": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "FailedApiResponseFormat": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "boolean"
+            },
+            "Stacktrace": {
+              "type": "boolean"
+            },
+            "metadata": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "field": {
+                  "type": "string"
+                },
+                "target": {
+                  "type": "string"
+                }
+              }
+            },
+            "message": {
+              "type": "string"
+            },
+            "details": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "boolean"
+                },
+                "operationStatus": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "README.md file for project",
+    "url": "https://github.com/DanielAdek/StackOverflow_API/blob/master/README.md"
+  }
+}
