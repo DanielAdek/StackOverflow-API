@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
-// import { Form } from 'form-my-simple-validation';
+import { Form } from 'form-my-simple-validation';
 import { ResponseFormat, successResponse, errorResponse } from '@modules/util/response';
-// import { formSchema } from '@modules/validation/schema';
+import { formSchema } from '@modules/validation/schema';
 import db from '@models/index';
 import * as Messanger from '@modules/services/StackService';
 
@@ -20,7 +20,12 @@ export class StackQuestion {
    */
    public static createQuestion = async (req: Request, res: Response): Promise<ResponseFormat | any> => {
      try {
+      const validationResult: ResponseFormat = Form.validateFields('create_question', formSchema, req.body);
 
+      if (validationResult.error) {
+        return res.status(400).jsend.fail(validationResult);
+      }
+      
       const { questionaire, title, ques, tags } = req.body;
 
       // Confirm no duplicate record exit
