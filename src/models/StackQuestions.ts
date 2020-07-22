@@ -6,9 +6,9 @@ export interface StackQuestions extends Document
   ques: string;
   title: string;
   tags: Array<string>;
+  asked: string;
   viewed: number;
-  asked: Date;
-  active: string;
+  createdAt: Date;
 }
 
 const StackQuestionsSchema = new Schema(
@@ -17,13 +17,14 @@ const StackQuestionsSchema = new Schema(
     title: String,
     ques: String,
     tags: [String],
-    viewed: Number,
-    asked: Date,
-    active: String
+    asked: String,
+    viewed: { type: Number, default: 0 }
   },
 {
   timestamps: true
 });
+
+StackQuestionsSchema.index({ title: 'text' }, { unique: true });
 
 const StackQuestions: Model<StackQuestions> = model('StackQuestions', StackQuestionsSchema);
 
