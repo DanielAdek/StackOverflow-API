@@ -9,5 +9,10 @@ export const formSchema = {
     username: { field: 'questionaire', required: true, isName: true },
     question: { field: 'ques', required: true },
     tags: { field: 'tags', required: true }
+  },
+  answer: {
+    formType: 'create_answer',
+    ans: { field: 'ans', required: true },
+    username: { field: 'answerer', required: true, isName: true },
   }
 };

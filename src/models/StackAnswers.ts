@@ -17,7 +17,10 @@ const StackAnswersSchema = new Schema(
     answerer: String,
     ans: String,
     answered: Date,
-    likes: Number
+    likes: {
+      type: Number,
+      default: 0
+    }
   },
 {
   timestamps: true

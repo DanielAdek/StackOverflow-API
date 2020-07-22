@@ -129,7 +129,7 @@
         }
       }
     },
-    "/stack/answer/{questionId}": {
+    "/stack/question/{questionId}/answer": {
       "post": {
         "tags": [
           "StackAnswer"
@@ -177,7 +177,7 @@
         }
       }
     },
-    "/stack/question/{questionId}/answers": {
+    "/stack/answer/{answerId}/like": {
       "get": {
         "tags": [
           "StackAnswer"
@@ -188,7 +188,7 @@
         "parameters": [
           {
           "in": "path",
-          "name": "questionId",
+          "name": "answerId",
           "description": "Paste the Id of the question you want to get its answers",
           "required": true,
           "type": "string"
@@ -248,10 +248,6 @@
           "example": "Daniel Adekunle"
         }
       }
-    },
-    "params": {
-      "type": "string",
-      "example": "5ee7666a29dc6b0ac4c9bbdf"
     },
     "SuccessApiResponseFormat": {
       "type": "object",
