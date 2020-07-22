@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
-import StackQuestions from '@modules/models/StackQuestions';
-import StackAnswers from '@modules/models/StackAnswers';
+import StackQuestionsDB from '@modules/models/StackQuestions';
+import StackAnswersDB from '@modules/models/StackAnswers';
 
 config();
 
@@ -34,4 +34,4 @@ mongoose.connection.on('error', (err: any) => {
   console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
 });
 
-export default { StackQuestions, StackAnswers };
+export default { StackQuestionsDB, StackAnswersDB };

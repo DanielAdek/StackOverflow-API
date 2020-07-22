@@ -1,6 +1,6 @@
 import { model, Document, Model, Schema } from "mongoose";
 
-interface StackAnswers extends Document
+export interface StackAnswers extends Document
 {
   answerer: string;
   ans: string;

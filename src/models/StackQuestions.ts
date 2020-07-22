@@ -1,9 +1,10 @@
 import { model, Document, Model, Schema } from "mongoose";
 
-interface StackQuestions extends Document
+export interface StackQuestions extends Document
 {
   questionaire: string;
   ques: string;
+  title: string;
   tags: Array<string>;
   viewed: number;
   asked: Date;
@@ -13,6 +14,7 @@ interface StackQuestions extends Document
 const StackQuestionsSchema = new Schema(
   {
     questionaire: String,
+    title: String,
     ques: String,
     tags: [String],
     viewed: Number,
