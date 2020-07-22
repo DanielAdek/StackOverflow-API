@@ -8,7 +8,7 @@ import jsend from 'jsend';
 import errorHandler from "errorhandler";
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '@modules/swagger.json';
-// import Routes from "@routes/index";
+import Routes from "@routes/index";
 import logger from "@modules/util/logger";
 import { saveHost } from "@modules/libraries/loaders";
 import { ResponseFormat, errorResponse, successResponse } from '@modules/util/response';
@@ -32,7 +32,7 @@ class ExpressServer {
 		
 		APPLICATION.starter();
 		
-		// APPLICATION.routes();
+		APPLICATION.routes();
 		
 		APPLICATION.all();
 
@@ -66,11 +66,11 @@ class ExpressServer {
 		APPLICATION.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 	};
 
-	// private routes = () => {
-	// 	const { app: APPLICATION } = this;
+	private routes = () => {
+		const { app: APPLICATION } = this;
 
-	// 	APPLICATION.use('/api/v1', Routes.router);
-	// }
+		APPLICATION.use('/api/v1', Routes._router);
+	}
 
 	private starter = () => {
 		const { app: APPLICATION } = this;
