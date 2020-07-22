@@ -11,6 +11,7 @@ class StackRoutes {
 		
   private questionEndpoint = (): void => {
     this._router.post('/question/create', StackQuestion.createQuestion);
+    this._router.get('/question', StackQuestion.retrieveQuestion);
   }
 }
 export default new StackRoutes();
