@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { StackQuestion } from '@modules/controllers/StackQuestionAction';
+import { StackAnswer } from '@modules/controllers/StackAnswerAction';
 
 class StackRoutes {
   public readonly _router: Router;
@@ -16,8 +17,8 @@ class StackRoutes {
   }
 
   private answerEndpoint = (): void => {
-    this._router.post('/question/:questionId/answer', StackQuestion.createQuestion);
-    this._router.get('/answer/:answerId/like', StackQuestion.retrieveQuestion);
+    this._router.post('/question/:questionId/answer', StackAnswer.createAnswer);
+    this._router.get('/answer/:answerId/like', StackAnswer.likeAnswer);
   }
 }
 export default new StackRoutes();

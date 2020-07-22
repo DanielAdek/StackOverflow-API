@@ -16,7 +16,7 @@ const StackAnswersSchema = new Schema(
     },
     answerer: String,
     ans: String,
-    answered: Date,
+    answered: String,
     likes: {
       type: Number,
       default: 0
