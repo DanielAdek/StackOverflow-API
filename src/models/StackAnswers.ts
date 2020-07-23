@@ -5,7 +5,7 @@ export interface StackAnswers extends Document
   answerer: string;
   ans: string;
   answered: Date;
-  likes: number;
+  vote: number;
 }
 
 const StackAnswersSchema = new Schema(
@@ -17,7 +17,7 @@ const StackAnswersSchema = new Schema(
     answerer: String,
     ans: String,
     answered: String,
-    likes: {
+    vote: {
       type: Number,
       default: 0
     }

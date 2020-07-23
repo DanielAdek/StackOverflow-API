@@ -6,7 +6,7 @@ import { formSchema } from '@modules/validation/schema';
 import db from '@models/index';
 import * as Messanger from '@modules/services/StackService';
 import { StackAnswers } from '@modules/models/StackAnswers';
-
+import Redis from '@modules/util/redis';
 
 /**
  * @class StackAnswer
@@ -60,7 +60,7 @@ export class StackAnswer {
    * @param {object} res Response object
    * @returns {object} Json data
    */
-   public static likeAnswer = async (req: Request, res: Response): Promise<ResponseFormat | any> => {
+   public static voteAnswer = async (req: Request, res: Response): Promise<ResponseFormat | any> => {
      try {
       const { answerId } = req.params;
 
@@ -72,9 +72,11 @@ export class StackAnswer {
       }
 
       // PERFORM LIKE ACTION
-      answer.likes += 1;
+      answer.vote += 1;
       answer.save();
 
+      Redis.clearKey(db.StackQuestionsDB.collection.collectionName);
+      
       const result = successResponse('Like Successful!', 200, 'like answer', { error: false, operationStatus: 'Proccess Completed!' });
       return res.status(201).jsend.success(result);
     } catch (error) {

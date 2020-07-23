@@ -67,7 +67,30 @@ export class StackQuestion {
    */
    public static retrieveQuestion = async (req: Request, res: Response): Promise<ResponseFormat | any> => {
      try {
-      const question = <StackQuestions> await Messanger.shouldFindOneObject(db.StackQuestionsDB, { title: (req.query.search as string).toUpperCase() }).cache();
+      const { search } = req.query;
+      
+      if (!search) {
+        const joinOption = {
+          $lookup:
+            {
+              from: 'stackanswers',
+              localField: '_id',
+              foreignField: 'questionId',
+              as: 'answers'
+            }
+       };
+        const QandA = await Messanger.shouldFindAndJoin(db.StackQuestionsDB, joinOption).cache();
+
+        // UPDATE EACH - ASKED DATE
+        for (const question of QandA) {
+          const data = { asked: moment((question as StackQuestions).createdAt).fromNow() };
+          await Messanger.shouldEditOneObject(db.StackQuestionsDB, { id: question._id, data });
+        }
+
+        const result = successResponse('Questions retrieved Successfully', 200, 'retrieve question', { error: false, operationStatus: 'Proccess Completed!', QandA });
+        return res.status(200).jsend.success(result);
+      }
+      const question = <StackQuestions> await Messanger.shouldFindOneObject(db.StackQuestionsDB, { title: (search as string).toUpperCase() }).cache();
 
       if (!question) {
         const result = errorResponse('ErrDocNotFound', 404, 'ques', 'retrieve question', 'Question does not exist', {
@@ -76,7 +99,7 @@ export class StackQuestion {
         return res.status(404).jsend.fail(result);
       }
 
-      const answers = await Messanger.shouldFindObjects(db.StackAnswersDB, { questionId: question._id }).cache();
+      const answers = await Messanger.shouldFindObjects(db.StackAnswersDB, { questionId: question._id })
 
       question.viewed += 1;
 

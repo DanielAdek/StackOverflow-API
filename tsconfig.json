@@ -18,7 +18,6 @@
       "@models/*": ["src/models/*"],
       "@controllers/*": ["src/controllers/*"],
       "@routes/*": ["src/routes/*"],
-      "@helpers/*": ["src/helpers/*"],
       "*": [
 				"node_modules/*",
 				"src/types/*"

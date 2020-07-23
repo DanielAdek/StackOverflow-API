@@ -18,7 +18,7 @@ class StackRoutes {
 
   private answerEndpoint = (): void => {
     this._router.post('/question/:questionId/answer', StackAnswer.createAnswer);
-    this._router.get('/answer/:answerId/like', StackAnswer.likeAnswer);
+    this._router.patch('/answer/:answerId/vote', StackAnswer.voteAnswer);
   }
 }
 export default new StackRoutes();
