@@ -79,7 +79,7 @@ export class StackQuestion {
               as: 'answers'
             }
        };
-        const QandA = await Messanger.shouldFindAndJoin(db.StackQuestionsDB, joinOption).cache();
+        const QandA = await Messanger.shouldFindAndJoin(db.StackQuestionsDB, joinOption);
 
         // UPDATE EACH - ASKED DATE
         for (const question of QandA) {

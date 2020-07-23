@@ -54,8 +54,8 @@ export class StackAnswer {
 
   /**
    * @author DanielAdek
-   * @method likeAnswer
-   * @desc Feature to like an answer
+   * @method voteAnswer
+   * @desc Feature to vote an answer
    * @param {object} req Request object
    * @param {object} res Response object
    * @returns {object} Json data
@@ -67,20 +67,20 @@ export class StackAnswer {
       const answer = <StackAnswers> await Messanger.shouldFindOneObject(db.StackAnswersDB, { _id: answerId });
 
       if (!answer) {
-        const result = errorResponse('ErrDocNotFound', 404, 'answerId', 'like answer', 'Answer does not exist', { error: true, operationStatus: 'Proccess Terminated!' });
+        const result = errorResponse('ErrDocNotFound', 404, 'answerId', 'vote answer', 'Answer does not exist', { error: true, operationStatus: 'Proccess Terminated!' });
         return res.status(404).jsend.fail(result);
       }
 
-      // PERFORM LIKE ACTION
+      // PERFORM VOTE ACTION
       answer.vote += 1;
       answer.save();
 
       Redis.clearKey(db.StackQuestionsDB.collection.collectionName);
       
-      const result = successResponse('Like Successful!', 200, 'like answer', { error: false, operationStatus: 'Proccess Completed!' });
+      const result = successResponse('Vote Successful!', 200, 'vote answer', { error: false, operationStatus: 'Proccess Completed!' });
       return res.status(201).jsend.success(result);
     } catch (error) {
-      const result = errorResponse(`${error.syscall || error.name || 'ServerError'}`, 500, `${error.path || 'No Field'}`, 'like answer', `${error.message}`, { error: true, operationStatus: 'Proccess Terminated!', errorSpec: error });
+      const result = errorResponse(`${error.syscall || error.name || 'ServerError'}`, 500, `${error.path || 'No Field'}`, 'vote answer', `${error.message}`, { error: true, operationStatus: 'Proccess Terminated!', errorSpec: error });
       return res.status(500).jsend.fail(result);
     }
   }

@@ -20,6 +20,8 @@ class ExpressServer {
 
 	private readonly app_start: number =  moment().unix();
 
+	private readonly PORT: number = parseInt(process.env.PORT!, 10) || 4000;
+
 	constructor(private app: express.Application) {
 		const APPLICATION = this;
 
@@ -46,7 +48,7 @@ class ExpressServer {
 		APPLICATION.use(bodyParser.urlencoded({ extended: true }));
 
 		// SET APPLICATION PORT
-		APPLICATION.set("port", parseInt(process.env.PORT!, 10));
+		APPLICATION.set("port", this.PORT);
 
 		// ERROR HANDLER
 		APPLICATION.use(errorHandler());
