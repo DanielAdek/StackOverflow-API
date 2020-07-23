@@ -77,7 +77,7 @@ export class StackQuestion {
         return res.status(404).jsend.fail(result);
       }
 
-      const answers = await Messanger.shouldFindOneObject(db.StackAnswersDB, { questionId: question._id }).cache();
+      const answers = await Messanger.shouldFindObjects(db.StackAnswersDB, { questionId: question._id }).cache();
 
       question.viewed += 1;
 
