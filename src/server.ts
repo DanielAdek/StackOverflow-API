@@ -10,14 +10,11 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '@modules/swagger.json';
 import Routes from "@routes/index";
 import logger from "@modules/util/logger";
-import { saveHost } from "@modules/libraries/loaders";
 import { ResponseFormat, errorResponse, successResponse } from '@modules/util/response';
-
 
 /**
  * @desc Start Express server.
  * @class Server
- * @returns void
  */
 class ExpressServer {
 
@@ -42,14 +39,6 @@ class ExpressServer {
 	private config = (): void => {
 		const { app: APPLICATION } = this;
 
-		// SAVE HOST
-		APPLICATION.use(saveHost);
-
-		APPLICATION.set("json spaces", 4);
-		
-		// TRUST REVERSE PROXY
-		APPLICATION.set("trust proxy", true);
-		
 		// USE MIDDLEWARES
 		APPLICATION.use(cors());
 		APPLICATION.use(jsend.middleware);

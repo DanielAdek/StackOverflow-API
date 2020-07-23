@@ -6,6 +6,8 @@ import { formSchema } from '@modules/validation/schema';
 import db from '@models/index';
 import * as Messanger from '@modules/services/StackService';
 import { StackQuestions } from '@modules/models/StackQuestions';
+import Redis from '@modules/util/redis';
+import { StackAnswers } from '@modules/models/StackAnswers';
 
 /**
  * @class StackQuestion
@@ -14,7 +16,7 @@ export class StackQuestion {
   /**
    * @author DanielAdek
    * @method createQuestion
-   * @desc Feature create user account
+   * @desc Feature create question
    * @param {object} req Request object
    * @param {object} res Response object
    * @returns {object} Json data
@@ -41,9 +43,11 @@ export class StackQuestion {
 
       const arrayOfTags = tags.split(',').map((x: string) => x.trim());
 
-      const data = { questionaire, title, ques, tags: arrayOfTags, asked };
+      const data = { questionaire, title: title.toUpperCase(), ques, tags: arrayOfTags, asked };
 
       const question = await Messanger.shouldInsertToDataBase(db.StackQuestionsDB, data);
+
+      Redis.clearKey(db.StackQuestionsDB.collection.collectionName);
 
       const result = successResponse('Question Created Successfully', 201, 'create question', { error: false, operationStatus: 'Proccess Completed!', question });
 
@@ -57,27 +61,31 @@ export class StackQuestion {
   /**
    * @author DanielAdek
    * @method retrieveQuestions
-   * @desc Feature create user account
+   * @desc Feature retrieve question
    * @param {object} req Request object
    * @param {object} res Response object
    * @returns {object} Json data
    */
    public static retrieveQuestion = async (req: Request, res: Response): Promise<ResponseFormat | any> => {
      try {
-      const foundQues = <StackQuestions> await Messanger.shouldFindOneObject(db.StackQuestionsDB, { title: req.query.search });
+      const question = <StackQuestions> await Messanger.shouldFindOneObject(db.StackQuestionsDB, { title: (req.query.search as string).toUpperCase() }).cache();
 
-      if (!foundQues) {
-        const result = errorResponse('ErrDocNotFound', 404, 'ques', 'retrieve question', 'Question does not exist', { error: true, operationStatus: 'Proccess Terminated!' });
+      if (!question) {
+        const result = errorResponse('ErrDocNotFound', 404, 'ques', 'retrieve question', 'Question does not exist', {
+          error: true, operationStatus: 'Proccess Terminated!'
+        });
         return res.status(404).jsend.fail(result);
       }
 
-      foundQues.viewed += 1;
+      const answers = await Messanger.shouldFindOneObject(db.StackAnswersDB, { questionId: question._id }).cache();
 
-      foundQues.asked = moment((foundQues as StackQuestions).createdAt).fromNow();
+      question.viewed += 1;
 
-      await foundQues.save();
+      question.asked = moment((question as StackQuestions).createdAt).fromNow();
 
-      const result = successResponse('Question retrieved Successfully', 200, 'retrieve question', { error: false, operationStatus: 'Proccess Completed!', foundQues });
+      await question.save();
+
+      const result = successResponse('Question retrieved Successfully', 200, 'retrieve question', { error: false, operationStatus: 'Proccess Completed!', question, answers });
 
       return res.status(200).jsend.success(result);
     } catch (error) {
