@@ -7,7 +7,6 @@ import db from '@models/index';
 import * as Messanger from '@modules/services/StackService';
 import { StackQuestions } from '@modules/models/StackQuestions';
 import Redis from '@modules/util/redis';
-import { StackAnswers } from '@modules/models/StackAnswers';
 
 /**
  * @class StackQuestion
